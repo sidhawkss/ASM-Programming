@@ -10,17 +10,31 @@
 	cdq
 	add r12, rax
 	loop %%counter
-
-	xor rax,rax	
+	
 	mov rax, r12
 	mov rbx, r11
 	div rbx
+	add rax, "0"
+	
+
+	mov r13, save
+	mov qword[r13], rax
+	mov qword[r13+4], 10
+	mov rax,1
+	mov rdi,1 
+	mov rsi,save
+	mov rdx,10
+	syscall
 %endmacro
 
 section .data
 
 list: dq 1,2,3,4,5
 sizeList: dq 5
+
+section .bss
+
+save: resb 1
 
 section .text
 global _start
@@ -30,4 +44,4 @@ _start:
 	
 	mov rax,60
 	mov rdx,0
-	int 0x80
+	syscall
